@@ -1,0 +1,90 @@
+// Advanced Chess Movements in C – Recursion & Complex Loops
+// Atualização: Implementações com recursividade e loops complexos
+
+#include <stdio.h>
+
+#define UP        printf("Cima\n")
+#define DOWN      printf("Baixo\n")
+#define LEFT      printf("Esquerda\n")
+#define RIGHT     printf("Direita\n")
+
+// Função recursiva para mover a Torre
+void moverTorreRecursivo(int casasRestantes, int direcao) {
+    if (casasRestantes == 0) return;
+    switch (direcao) {
+        case 0: UP; break;
+        case 1: DOWN; break;
+        case 2: LEFT; break;
+        case 3: RIGHT; break;
+    }
+    moverTorreRecursivo(casasRestantes - 1, direcao);
+}
+
+// Função recursiva para mover o Bispo
+void moverBispoRecursivo(int casasRestantes, int dirVert, int dirHor) {
+    if (casasRestantes == 0) return;
+    (dirVert == 0 ? UP : DOWN);
+    (dirHor == 0 ? LEFT : RIGHT);
+    moverBispoRecursivo(casasRestantes - 1, dirVert, dirHor);
+}
+
+// Função recursiva para mover a Rainha
+void moverRainhaRecursivo(int casasDiagonal, int casasHorizontal, int dirVert, int dirHor) {
+    moverBispoRecursivo(casasDiagonal, dirVert, dirHor);
+    moverTorreRecursivo(casasHorizontal, dirHor == 0 ? 2 : 3);
+}
+
+// Movimento do Bispo com loops aninhados
+void moverBispoLoops(int casas) {
+    for (int v = 1; v <= casas; v++) {
+        UP;
+        for (int h = 0; h < 1; h++) {
+            RIGHT;
+        }
+    }
+}
+
+// Movimento do Cavalo com loops complexos
+void moverCavaloComplexo(int saltos) {
+    for (int s = 0; s < saltos; s++) {
+        for (int i = 0; i < 2; i++) {
+            UP;
+            if (i == 0) continue;
+        }
+        RIGHT;
+        if (s == 2) {
+            printf("(Interrompendo por demonstração)\n");
+            break;
+        }
+    }
+}
+
+int main(void) {
+    const int casasTorre   = 4;
+    const int casasBispo   = 3;
+    const int casasRainhaD = 2;
+    const int casasRainhaH = 2;
+    const int casasBispoLoop = 2;
+    const int saltosCavalo = 4;
+
+    printf("=== TORRE (recursivo) ===\n");
+    moverTorreRecursivo(casasTorre, 0);
+    printf("\n");
+
+    printf("=== BISPO (recursivo) ===\n");
+    moverBispoRecursivo(casasBispo, 0, 1);
+    printf("\n");
+
+    printf("=== RAINHA (recursivo) ===\n");
+    moverRainhaRecursivo(casasRainhaD, casasRainhaH, 0, 1);
+    printf("\n");
+
+    printf("=== BISPO (loops aninhados) ===\n");
+    moverBispoLoops(casasBispoLoop);
+    printf("\n");
+
+    printf("=== CAVALO (loops complexos) ===\n");
+    moverCavaloComplexo(saltosCavalo);
+
+    return 0;
+}
